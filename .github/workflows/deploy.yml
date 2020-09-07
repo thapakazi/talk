@@ -20,7 +20,7 @@ jobs:
         tags: latest
 
     - name: Install civo
-      uses: civo/action-civo
+      uses: civo/action-civo@master
       with:
         token: ${{ secrets.CIVO_TOKEN }}
 
