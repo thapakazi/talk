@@ -25,7 +25,7 @@ jobs:
         token: ${{ secrets.CIVO_TOKEN }}
 
     - name: Get kubeconfig
-      run: civo kubernetes config ${{ secrets.CLUSTER_NAME }}
+      run: civo kubernetes config ${{ secrets.CLUSTER_NAME }} -s -p /tmp/kube.config
 
     - name: Install kubectl
       run: |
@@ -33,5 +33,6 @@ jobs:
 
     - name: Deploy new release
       run: |
+        export KUBECONFIG=/tmp/kube.config
         kubectl apply -f deploy/deployment.yml -n talk
         kubectl rollout status deploy/talk -n talk
