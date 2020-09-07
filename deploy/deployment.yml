@@ -4,10 +4,10 @@ kind: Deployment
 metadata:
   name: talk
   labels:
-    exp: true
+    exp: "true"
 
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: talk
@@ -27,23 +27,37 @@ spec:
           name: talk
           ports:
             - containerPort: 3000
-          envFrom:
-            - secretRef:
-                name: talk
-
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: talk
   labels:
-    exp: true
+    exp: "true"
   annotations:
 spec:
   ports:
     - name: backend
       port: 80
       targetPort: 3000
-  type: CulsterIp
+  type: ClusterIP
   selector:
     app: talk
+
+---
+# apiVersion: extensions/v1beta1
+# kind: Ingress
+# metadata:
+#   name: talk
+#   annotations:
+#     kubernetes.io/ingress.class: traefik
+# spec:
+#   rules:
+#   - host: talk.myapp.io
+#     http:
+#       paths:
+#       - path: /
+#         backend:
+#           serviceName: talk
+#           servicePort: 80
+
